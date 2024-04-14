@@ -52,7 +52,7 @@ env:
 #See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/createservicecommandinput.html for information about how to craft a valid `spec` or `spec-file`.
     spec-file: # optional
     # Whether to force a new deployment when updating the service. false by default.
-true | [false]
+  true | [false]
     force-new-deployment: # optional
     # Whether to create the resource or delete the resource. Creates by default
 [create] | delete

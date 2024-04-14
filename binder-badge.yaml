@@ -1,4 +1,9 @@
 #./.github/HTM_CAPM/binder-badge.yaml
+ build:
+     jobs:
+         pre_build:
+         # Generate the Sphinx configuration for this Jupyter Book so it builds.
+         - "jupyter-book config sphinx docs/"
 name: Binder Badge
 on:
   pull_request_target:

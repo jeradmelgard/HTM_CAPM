@@ -28,205 +28,16 @@ name: Deploy to Amazon ECS
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 env:
-  AWS_REGION: us-west-2                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY:- name: CAPM #"Create AWS ECR Repository" Action For GitHub Actions
-  # You may pin to the exact commit or the version.
-  # uses: cookiecutter-openedx/aws-ecr-create@c759b3bd3f351020634c1ccce534fab11ed3cd81
-  uses: cookiecutter-openedx/aws-ecr-create@v0.0.2
-  with:
-    # The name of the repository to create in AWS Elastic Container Registry (ECR) in your AWS account. Defaults to "openedx"
-    aws-ecr-repository: # optional, default is openedx
-                     # set this to your Amazon ECR repository name
-  ECS_SERVICE:- name: CAPM_SERVICE #Amazon ECS Service Action for GitHub Actions
-  # You may pin to the exact commit or the version.
-  # uses: scribd/amazon-ecs-service-action@7c146fc4e9455d303e1d6fd224e5e29fbc860eec
-  uses: scribd/amazon-ecs-service-action@v1.1.43
-  with:
-    # Specify either a `spec-file` as a filename, a `spec` as a JSON string, or both. If you supply both, `spec` will naively override any top level keys in `spec-file`. You might do this if you have data coming from a previous step.
-#See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/createservicecommandinput.html for information about how to craft a valid `spec` or `spec-file`.
-    spec: # optional
-    # Specify either a `spec-file` as a filename, a `spec` as a JSON string, or both. If you supply both, `spec` will naively override any top level keys in `spec-file`. You might do this if you have data coming from a previous step.
-#See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/createservicecommandinput.html for information about how to craft a valid `spec` or `spec-file`.
-    spec-file: # optional
-    # Whether to force a new deployment when updating the service. false by default.
-true | [false]
-    force-new-deployment: # optional
-    # Whether to create the resource or delete the resource. Creates by default
-[create] | delete
-    action: # optional
-    # If true, allows you to delete a service even if it has not been scaled down to zero tasks. It is only necessary to use this if the service is using the REPLICA scheduling strategy.
-true | [false]
-    force-delete: # optional
-    # If set with any value, will wait until the tasks return with a RUNNING state.
-true | [undefined]
-    wait-until-deployment-complete: # optional
-                           # set this to your Amazon ECS service name
-  ECS_CLUSTER: - name: CAPM_CLUSTER #Deploy an AWS ECS Cluster
-  # You may pin to the exact commit or the version.
-  # uses: bitovi/github-actions-deploy-ecs@1d2a96709d0f80f8ad66dc384e8fe5b7c1c180a8
-  uses: bitovi/github-actions-deploy-ecs@v0.1.4
-  with:
-    # AWS access key ID
-    aws_access_key_id: # optional
-    # AWS secret access key
-    aws_secret_access_key: MY_AWS
-    # AWS session token
-    aws_session_token: # optional
-    # AWS default region
-    aws_default_region: # optional, default is us-east-1
-    # Set to override the AWS resource identifier for the deployment.  Defaults to `${org}-{repo}-{branch}`.  Use with destroy to destroy specific resources.
-    aws_resource_identifier: # optional
-    # A JSON object of additional tags that will be included on created resources. Example: `{"key1": "value1", "key2": "value2"}`
-    aws_additional_tags: # optional
-    # Specifies if this action should checkout the code
-    checkout: # optional, default is true
-    # Will run only the generation phase of BitOps, where the Terraform and Ansible code is built.
-    bitops_code_only: # optional
-    # Store BitOps code as a GitHub artifact
-    bitops_code_store: # optional
-    # Set to "true" to Destroy the stack through Terraform.
-    tf_stack_destroy: # optional
-    # Change this to be anything you want to. Carefull to be consistent here. A missing file could trigger recreation, or stepping over destruction of non-defined objects.
-    tf_state_file_name: # optional
-    # Append a string to the tf-state-file. Setting this to `unique` will generate `tf-state-aws-unique`. Can co-exist with the tf_state_file_name variable. 
-    tf_state_file_name_append: # optional
-    # AWS S3 bucket to use for Terraform state. Defaults to `${org}-${repo}-{branch}-tf-state`
-    tf_state_bucket: # optional
-    # Force purge and deletion of S3 bucket defined. Any file contained there will be destroyed. `tf_stack_destroy` must also be `true`
-    tf_state_bucket_destroy: # optional
-    # Toggle ECS Creation
-    aws_ecs_enable: # optional, default is true
-    # Elastic Container Service name
-    aws_ecs_service_name: # optional
-    # Elastic Container Service cluster name
-    aws_ecs_cluster_name: # optional
-    # Configuration type. Could be EC2, FARGATE or EXTERNAL
-    aws_ecs_service_launch_type: # optional
-    # Configuration type. Could be EC2, FARGATE or empty. Will default to aws_ecs_service_launch_type if none defined. (Blank if EXTERNAL)
-    aws_ecs_task_type: # optional
-    # Elastic Container Service task name
-    aws_ecs_task_name: # optional
-    # Elastic Container Service task execution role name from IAM. Defaults to "ecsTaskExecutionRole"
-    aws_ecs_task_execution_role: # optional
-    # Name of the json file containing task definition. Overrides every other input.
-    aws_ecs_task_json_definition_file: # optional
-    # Network type to use in task definition
-    aws_ecs_task_network_mode: # optional
-    # Task CPU Amount
-    aws_ecs_task_cpu: # optional
-    # Task Mem Amount
-    aws_ecs_task_mem: # optional
-    # Container CPU Amount
-    aws_ecs_container_cpu: # optional
-    # Container Mem Amount
-    aws_ecs_container_mem: # optional
-    # Node count for ECS Cluster
-    aws_ecs_node_count: # optional
-    # Name of the image to be used
-    aws_ecs_app_image: # optional
-    # ECS Secruity group name
-    aws_ecs_security_group_name: # optional
-    # Assign public IP to node
-    aws_ecs_assign_public_ip: # optional
-    # Comma separated list of container ports
-    aws_ecs_container_port: # optional
-    # Comma serparated list of ports exposed by the load balancer
-    aws_ecs_lb_port: # optional
-    # Toggle redirect from HTTP and/or HTTPS to the main port.
-    aws_ecs_lb_redirect_enable: # optional
-    # Path for subsequent deployed images. eg. api.
-    aws_ecs_lb_container_path: # optional
-    # SSL Policy for HTTPS listener in ALB. Will default to ELBSecurityPolicy-TLS13-1-2-2021-06 if none provided.
-    aws_ecs_lb_ssl_policy: # optional
-    # Toggle ecs autoscaling policy
-    aws_ecs_autoscaling_enable: # optional
-    # Max ammount of nodes to scale up to.
-    aws_ecs_autoscaling_max_nodes: # optional
-    # Min ammount of nodes to scale down to.
-    aws_ecs_autoscaling_min_nodes: # optional
-    # Max ammount of mem to scale up to.
-    aws_ecs_autoscaling_max_mem: # optional
-    # Max ammount of cou to scale up to.
-    aws_ecs_autoscaling_max_cpu: # optional
-    # Toggle cloudwatch for ECS. Default 'false'
-    aws_ecs_cloudwatch_enable: # optional
-    # Log group name. Will default to aws_identifier if none.
-    aws_ecs_cloudwatch_lg_name: # optional
-    # Toggle deletion or not when destroying the stack.
-    aws_ecs_cloudwatch_skip_destroy: # optional
-    # Number of days to retain logs. 0 to never expire. Default '14'
-    aws_ecs_cloudwatch_retention_days: # optional
-    # A list of strings that will be added to created resources
-    aws_ecs_additional_tags: # optional
-    # Secret name to pull env variables from AWS Secret Manager
-    env_aws_secret: # optional
-    # File containing environment variables to be used with the app
-    env_repo: # optional
-    # `.env` file to be used with the app from Github secrets
-    env_ghs: # optional
-    # `.env` file to be used with the app from Github variables
-    env_ghv: # optional
-    # Define if a VPC should be created
-    aws_vpc_create: # optional
-    # Set a specific name for the VPC
-    aws_vpc_name: # optional
-    # Define Base CIDR block which is divided into subnet CIDR blocks. Defaults to 10.0.0.0/16.
-    aws_vpc_cidr_block: # optional
-    # Comma separated list of public subnets. Defaults to 10.10.110.0/24
-    aws_vpc_public_subnets: # optional
-    # Comma separated list of private subnets. If none, none will be created.
-    aws_vpc_private_subnets: # optional
-    # Comma separated list of availability zones. Defaults to `aws_default_region.
-    aws_vpc_availability_zones: # optional
-    # AWS VPC ID. Accepts `vpc-###` values.
-    aws_vpc_id: # optional
-    # Specify a Subnet to be used with the instance. If none provided, will pick one.
-    aws_vpc_subnet_id: # optional
-    # Enables NAT gateway
-    aws_vpc_enable_nat_gateway: # optional
-    # Creates only one NAT gateway
-    aws_vpc_single_nat_gateway: # optional
-    # Comma separated list of IP IDS to reuse in the NAT gateways
-    aws_vpc_external_nat_ip_ids: # optional
-    # A JSON object of additional tags that will be included on created resources. Example: `{"key1": "value1", "key2": "value2"}`
-    aws_vpc_additional_tags: # optional
-    # Enables the usage of Route53 to manage DNS records.
-    aws_r53_enable: # optional
-    # Define the root domain name for the application. e.g. app.com
-    aws_r53_domain_name: # optional
-    # Define the sub-domain part of the URL. Defaults to `${org}-${repo}-{branch}`
-    aws_r53_sub_domain_name: # optional
-    # Deploy to root domain. Will generate two DNS recrods, one for root, another for www
-    aws_r53_root_domain_deploy: # optional
-    # Makes the application use a certificate by enabling a certificate lookup.
-    aws_r53_enable_cert: # optional
-    # Define the certificate ARN to use for the application
-    aws_r53_cert_arn: # optional
-    # Generates and manage the root cert for the application
-    aws_r53_create_root_cert: # optional
-    # Generates and manage the sub-domain certificate for the application
-    aws_r53_create_sub_cert: # optional
-    # A JSON object of additional tags that will be included on created resources. Example: `{"key1": "value1", "key2": "value2"}`
-    aws_r53_additional_tags: # optional
-                           # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: MY_ECS_TASK_DEFINITION # set this to the path to your Amazon ECS task definition
-                                               # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: - name: CAPM_CONTAINER #AWS ECS "Update Container Name in Task Definition" Action for GitHub Actions
-  # You may pin to the exact commit or the version.
-  # uses: ohueter/aws-ecs-task-definition-set-container-name@8d2ad17642ca8c030796d7f6c2bed8ac95cb63dd
-  uses: ohueter/aws-ecs-task-definition-set-container-name@v1
-  with:
-    # The path to the ECS task definition JSON file
-    task-definition: 
-    # The current name of the container defined in the containerDefinitions section of the ECS task definition
-    container-name: 
-    # The new container name to insert into the ECS task definition
-    new-container-name: 
-                   # set this to the name of the container in the
-                                               # containerDefinitions section of your task definition
+  AWS_REGION: us-west-2
+  ECR_REPOSITORY: my-ecr-repo
+  ECS_SERVICE: my-ecs-service
+  ECS_CLUSTER: my-ecs-cluster
+  ECS_TASK_DEFINITION: .aws/task-definition.json
+  CONTAINER_NAME: my-container
 
 permissions:
   contents: read
@@ -238,45 +49,43 @@ jobs:
     environment: production
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
-      run: |
-        # Build a docker container and
-        # push it to ECR so that it can
-        # be deployed to ECS.
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
 
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
-        container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ steps.build-image.outputs.image }}
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image }}
 
-    - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
-        service: ${{ env.ECS_SERVICE }}
-        cluster: ${{ env.ECS_CLUSTER }}
-        wait-for-service-stability: true
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+

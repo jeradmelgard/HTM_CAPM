@@ -46,10 +46,10 @@ env:
   uses: scribd/amazon-ecs-service-action@v1.1.43
   with:
     # Specify either a `spec-file` as a filename, a `spec` as a JSON string, or both. If you supply both, `spec` will naively override any top level keys in `spec-file`. You might do this if you have data coming from a previous step.
-See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/createservicecommandinput.html for information about how to craft a valid `spec` or `spec-file`.
+#See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/createservicecommandinput.html for information about how to craft a valid `spec` or `spec-file`.
     spec: # optional
     # Specify either a `spec-file` as a filename, a `spec` as a JSON string, or both. If you supply both, `spec` will naively override any top level keys in `spec-file`. You might do this if you have data coming from a previous step.
-See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/createservicecommandinput.html for information about how to craft a valid `spec` or `spec-file`.
+#See https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-ecs/interfaces/createservicecommandinput.html for information about how to craft a valid `spec` or `spec-file`.
     spec-file: # optional
     # Whether to force a new deployment when updating the service. false by default.
 true | [false]
